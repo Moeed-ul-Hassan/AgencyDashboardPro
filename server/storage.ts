@@ -235,6 +235,52 @@ export class MemStorage implements IStorage {
   
   // Initialize sample data
   private async initializeSampleData() {
+    // Add Zylox team members
+    await this.createUser({
+      username: "moeed",
+      password: "$2a$10$iqJSHD.BGr0E2IxQwYgJmeP3NvhPrXAeLSaGCj6IR/XU5QtjVu5Ku", // "secret" encrypted
+      name: "Moeed Mirza",
+      email: "moeed@zylox.agency",
+      role: "admin, senior web dev",
+      avatar: null
+    });
+    
+    await this.createUser({
+      username: "ahmad",
+      password: "$2a$10$iqJSHD.BGr0E2IxQwYgJmeP3NvhPrXAeLSaGCj6IR/XU5QtjVu5Ku",
+      name: "Ahmad",
+      email: "ahmad@zylox.agency",
+      role: "game dev",
+      avatar: null
+    });
+    
+    await this.createUser({
+      username: "hasnain",
+      password: "$2a$10$iqJSHD.BGr0E2IxQwYgJmeP3NvhPrXAeLSaGCj6IR/XU5QtjVu5Ku",
+      name: "Hasnain",
+      email: "hasnain@zylox.agency",
+      role: "wordpress dev",
+      avatar: null
+    });
+    
+    await this.createUser({
+      username: "amaima",
+      password: "$2a$10$iqJSHD.BGr0E2IxQwYgJmeP3NvhPrXAeLSaGCj6IR/XU5QtjVu5Ku",
+      name: "Amaima",
+      email: "amaima@zylox.agency",
+      role: "shopify expert",
+      avatar: null
+    });
+    
+    await this.createUser({
+      username: "shahram",
+      password: "$2a$10$iqJSHD.BGr0E2IxQwYgJmeP3NvhPrXAeLSaGCj6IR/XU5QtjVu5Ku",
+      name: "Shahram",
+      email: "shahram@zylox.agency",
+      role: "web dev",
+      avatar: null
+    });
+    
     // Add Zylox team performance
     await this.addTeamPerformance({ team: 'Web Dev', performance: 85 });
     await this.addTeamPerformance({ team: 'Game Dev', performance: 75 });
