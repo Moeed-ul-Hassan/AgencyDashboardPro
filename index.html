@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZYLOX Agency Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="app">
+    <!-- App content will be dynamically loaded here -->
+    <!-- Initially the login page will be shown -->
+  </div>
+
+  <!-- Templates -->
+  <!-- Login Template -->
+  <template id="login-template">
+    <div class="auth-container">
+      <div class="auth-card">
+        <div class="auth-header">
+          <div class="logo">
+            <div class="logo-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+              </svg>
+            </div>
+            <h1 class="logo-text">ZYLOX</h1>
+          </div>
+          <h2>Sign In</h2>
+          <p>Access your ZYLOX dashboard</p>
+        </div>
+        <div class="auth-content">
+          <form id="login-form">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <div class="input-wrapper">
+                <i class="ri-user-line"></i>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <div class="input-wrapper">
+                <i class="ri-lock-line"></i>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <button type="button" class="toggle-password" aria-label="Toggle password visibility">
+                  <i class="ri-eye-line"></i>
+                </button>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary login-btn">
+              <span>Sign In</span>
+              <div class="spinner hidden"></div>
+            </button>
+            <div class="auth-info">
+              <p>Use the credentials provided by your administrator</p>
+              <p>Default: username: moeed / password: secret</p>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="auth-hero">
+        <div class="hero-content">
+          <h1>Welcome to ZYLOX Agency</h1>
+          <p>A powerful dashboard for digital agencies to manage projects, track performance, and collaborate with team members.</p>
+          <div class="features">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="ri-check-line"></i>
+              </div>
+              <div>
+                <h3>Project Management</h3>
+                <p>Easily create, assign, and track projects with your team</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="ri-check-line"></i>
+              </div>
+              <div>
+                <h3>Team Collaboration</h3>
+                <p>Work efficiently with your team members and clients</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="ri-check-line"></i>
+              </div>
+              <div>
+                <h3>Social Media Integration</h3>
+                <p>Track social media performance and analytics in one place</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <!-- Dashboard Template -->
+  <template id="dashboard-template">
+    <div class="dashboard-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-container">
+          <div class="sidebar-header">
+            <div class="logo">
+              <div class="logo-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                </svg>
+              </div>
+              <h1 class="logo-text">ZYLOX</h1>
+            </div>
+          </div>
+          <div class="sidebar-search">
+            <div class="input-wrapper">
+              <i class="ri-search-line"></i>
+              <input type="text" placeholder="Search...">
+            </div>
+          </div>
+          <nav class="sidebar-nav">
+            <div class="nav-section">
+              <p class="nav-section-title">Main Menu</p>
+              <ul>
+                <li class="nav-item active" data-page="dashboard">
+                  <a href="#dashboard">
+                    <i class="ri-dashboard-3-line"></i>
+                    <span>Dashboard</span>
+                  </a>
+                </li>
+                <li class="nav-item" data-page="projects">
+                  <a href="#projects">
+                    <i class="ri-folder-shield-line"></i>
+                    <span>Projects</span>
+                  </a>
+                </li>
+                <li class="nav-item" data-page="team">
+                  <a href="#team">
+                    <i class="ri-team-line"></i>
+                    <span>Team</span>
+                  </a>
+                </li>
+                <li class="nav-item" data-page="messages">
+                  <a href="#messages">
+                    <i class="ri-chat-3-line"></i>
+                    <span>Messages</span>
+                    <span class="badge">3</span>
+                  </a>
+                </li>
+                <li class="nav-item" data-page="social-media">
+                  <a href="#social-media">
+                    <i class="ri-share-forward-line"></i>
+                    <span>Social Media</span>
+                  </a>
+                </li>
+                <li class="nav-item" data-page="settings">
+                  <a href="#settings">
+                    <i class="ri-settings-3-line"></i>
+                    <span>Settings</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="nav-section">
+              <p class="nav-section-title">Resources</p>
+              <ul>
+                <li class="nav-item" data-page="help">
+                  <a href="#help">
+                    <i class="ri-question-line"></i>
+                    <span>Help Center</span>
+                  </a>
+                </li>
+                <li class="nav-item" data-page="docs">
+                  <a href="#docs">
+                    <i class="ri-file-text-line"></i>
+                    <span>Documentation</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+          <div class="sidebar-footer">
+            <div class="upgrade-card">
+              <div class="upgrade-icon">
+                <i class="ri-rocket-line"></i>
+              </div>
+              <div class="upgrade-content">
+                <p class="upgrade-title">Upgrade to Pro</p>
+                <p class="upgrade-desc">Get more features and priority support!</p>
+                <button class="btn btn-sm">Upgrade Now</button>
+              </div>
+            </div>
+            <div class="user-profile" id="user-profile">
+              <div class="user-avatar">
+                <img id="user-avatar" src="" alt="User">
+                <span id="user-initials"></span>
+              </div>
+              <div class="user-info">
+                <p class="user-name" id="user-name">User</p>
+                <p class="user-role" id="user-role">Role</p>
+              </div>
+              <button class="logout-btn" id="logout-btn">
+                <i class="ri-logout-box-r-line"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+          <div class="header-title">
+            <h1 id="page-title">Dashboard</h1>
+            <span class="date-display" id="date-display"></span>
+          </div>
+          <div class="header-actions">
+            <div class="action-item theme-toggle" id="theme-toggle">
+              <i class="ri-moon-line"></i>
+            </div>
+            <div class="action-item">
+              <i class="ri-calendar-line"></i>
+            </div>
+            <div class="action-item search-box">
+              <div class="input-wrapper">
+                <i class="ri-search-line"></i>
+                <input type="text" placeholder="Search...">
+              </div>
+            </div>
+            <div class="action-item notification-bell" id="notification-bell">
+              <i class="ri-notification-3-line"></i>
+              <span class="notification-badge"></span>
+              <div class="dropdown notifications-dropdown">
+                <div class="dropdown-header">
+                  <h3>Notifications</h3>
+                </div>
+                <div class="dropdown-content">
+                  <div class="notification-item">
+                    <div class="notification-avatar">
+                      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user1" alt="User">
+                    </div>
+                    <div class="notification-content">
+                      <p class="notification-title">New project assigned</p>
+                      <p class="notification-desc">Ahmad assigned you to the Website redesign project</p>
+                      <p class="notification-time">10 min ago</p>
+                    </div>
+                  </div>
+                  <div class="notification-item">
+                    <div class="notification-avatar">
+                      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user2" alt="User">
+                    </div>
+                    <div class="notification-content">
+                      <p class="notification-title">Task completed</p>
+                      <p class="notification-desc">Hasnain completed the logo design task</p>
+                      <p class="notification-time">2 hours ago</p>
+                    </div>
+                  </div>
+                  <div class="view-all">
+                    <a href="#notifications">View all notifications</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="action-item messages-icon" id="messages-icon">
+              <i class="ri-message-3-line"></i>
+              <span class="notification-badge"></span>
+              <div class="dropdown messages-dropdown">
+                <div class="dropdown-header">
+                  <h3>Messages</h3>
+                </div>
+                <div class="dropdown-content">
+                  <div class="message-item">
+                    <div class="message-avatar">
+                      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=person1" alt="Person">
+                    </div>
+                    <div class="message-content">
+                      <p class="message-sender">Ahmad Raza</p>
+                      <p class="message-text">Can you review the latest mockups?</p>
+                      <p class="message-time">5 min ago</p>
+                    </div>
+                  </div>
+                  <div class="message-item">
+                    <div class="message-avatar">
+                      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=person2" alt="Person">
+                    </div>
+                    <div class="message-content">
+                      <p class="message-sender">Amaima</p>
+                      <p class="message-text">The Shopify integration is complete</p>
+                      <p class="message-time">1 hour ago</p>
+                    </div>
+                  </div>
+                  <div class="view-all">
+                    <a href="#messages">View all messages</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="action-item user-menu" id="user-menu-toggle">
+              <div class="user-avatar small">
+                <img id="header-user-avatar" src="" alt="User">
+                <span id="header-user-initials"></span>
+              </div>
+              <div class="dropdown user-dropdown">
+                <div class="dropdown-header">
+                  <h3>My Account</h3>
+                </div>
+                <div class="dropdown-content">
+                  <a href="#profile">Profile</a>
+                  <a href="#settings">Settings</a>
+                  <a href="#help">Help</a>
+                  <a href="#" id="dropdown-logout">Logout</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard-content" id="dashboard-content">
+          <!-- Content will be loaded dynamically based on the selected page -->
+          <div class="page-content" id="dashboard-page">
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="ri-folder-chart-line"></i>
+                </div>
+                <div class="stat-content">
+                  <p class="stat-title">Total Projects</p>
+                  <p class="stat-value">28</p>
+                  <p class="stat-change positive">+12% from last month</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="ri-time-line"></i>
+                </div>
+                <div class="stat-content">
+                  <p class="stat-title">In Progress</p>
+                  <p class="stat-value">14</p>
+                  <p class="stat-change positive">+5% from last month</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="ri-check-double-line"></i>
+                </div>
+                <div class="stat-content">
+                  <p class="stat-title">Completed</p>
+                  <p class="stat-value">9</p>
+                  <p class="stat-change positive">+18% from last month</p>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="ri-user-star-line"></i>
+                </div>
+                <div class="stat-content">
+                  <p class="stat-title">Team Members</p>
+                  <p class="stat-value">5</p>
+                  <p class="stat-change neutral">No change</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="dashboard-grid">
+              <div class="dashboard-card project-list">
+                <div class="card-header">
+                  <h2>Recent Projects</h2>
+                  <a href="#projects" class="view-all-link">View all</a>
+                </div>
+                <div class="card-content">
+                  <div class="project-item">
+                    <div class="project-info">
+                      <h3>E-commerce Website</h3>
+                      <p class="project-desc">Online shop for XYZ Clothing Brand</p>
+                    </div>
+                    <div class="project-meta">
+                      <div class="project-status in-progress">In Progress</div>
+                      <div class="project-progress">
+                        <div class="progress-bar">
+                          <div class="progress-fill" style="width: 65%"></div>
+                        </div>
+                        <span>65%</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="project-item">
+                    <div class="project-info">
+                      <h3>Mobile App Development</h3>
+                      <p class="project-desc">Food delivery application for ABC Restaurant</p>
+                    </div>
+                    <div class="project-meta">
+                      <div class="project-status completed">Completed</div>
+                      <div class="project-progress">
+                        <div class="progress-bar">
+                          <div class="progress-fill" style="width: 100%"></div>
+                        </div>
+                        <span>100%</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="project-item">
+                    <div class="project-info">
+                      <h3>Brand Redesign</h3>
+                      <p class="project-desc">Logo and identity redesign for DEF Corp</p>
+                    </div>
+                    <div class="project-meta">
+                      <div class="project-status pending">Pending</div>
+                      <div class="project-progress">
+                        <div class="progress-bar">
+                          <div class="progress-fill" style="width: 20%"></div>
+                        </div>
+                        <span>20%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dashboard-card team-performance">
+                <div class="card-header">
+                  <h2>Team Performance</h2>
+                </div>
+                <div class="card-content">
+                  <div class="performance-chart" id="performance-chart">
+                    <!-- Chart will be rendered with JavaScript -->
+                  </div>
+                </div>
+              </div>
+
+              <div class="dashboard-card recent-activity">
+                <div class="card-header">
+                  <h2>Recent Activity</h2>
+                </div>
+                <div class="card-content">
+                  <div class="activity-timeline">
+                    <div class="activity-item">
+                      <div class="activity-icon">
+                        <i class="ri-file-add-line"></i>
+                      </div>
+                      <div class="activity-content">
+                        <p class="activity-title">New project created</p>
+                        <p class="activity-desc">Moeed created a new project: Website Redesign</p>
+                        <p class="activity-time">2 hours ago</p>
+                      </div>
+                    </div>
+                    <div class="activity-item">
+                      <div class="activity-icon">
+                        <i class="ri-user-follow-line"></i>
+                      </div>
+                      <div class="activity-content">
+                        <p class="activity-title">Task assigned</p>
+                        <p class="activity-desc">Ahmad assigned a task to Hasnain</p>
+                        <p class="activity-time">5 hours ago</p>
+                      </div>
+                    </div>
+                    <div class="activity-item">
+                      <div class="activity-icon">
+                        <i class="ri-check-line"></i>
+                      </div>
+                      <div class="activity-content">
+                        <p class="activity-title">Task completed</p>
+                        <p class="activity-desc">Amaima completed: Shopify Integration</p>
+                        <p class="activity-time">Yesterday, 4:30 PM</p>
+                      </div>
+                    </div>
+                    <div class="activity-item">
+                      <div class="activity-icon">
+                        <i class="ri-message-2-line"></i>
+                      </div>
+                      <div class="activity-content">
+                        <p class="activity-title">New comment</p>
+                        <p class="activity-desc">Shahram commented on Mobile App project</p>
+                        <p class="activity-time">Yesterday, 2:15 PM</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dashboard-card social-media-stats">
+                <div class="card-header">
+                  <h2>Social Media Stats</h2>
+                </div>
+                <div class="card-content">
+                  <div class="social-media-grid">
+                    <div class="social-media-item">
+                      <div class="social-media-icon">
+                        <i class="ri-facebook-fill"></i>
+                      </div>
+                      <div class="social-media-content">
+                        <p class="social-media-value">8,230</p>
+                        <p class="social-media-title">Followers</p>
+                        <p class="social-media-change positive">+2.5%</p>
+                      </div>
+                    </div>
+                    <div class="social-media-item">
+                      <div class="social-media-icon">
+                        <i class="ri-twitter-x-fill"></i>
+                      </div>
+                      <div class="social-media-content">
+                        <p class="social-media-value">4,890</p>
+                        <p class="social-media-title">Followers</p>
+                        <p class="social-media-change positive">+1.8%</p>
+                      </div>
+                    </div>
+                    <div class="social-media-item">
+                      <div class="social-media-icon">
+                        <i class="ri-instagram-line"></i>
+                      </div>
+                      <div class="social-media-content">
+                        <p class="social-media-value">12,560</p>
+                        <p class="social-media-title">Followers</p>
+                        <p class="social-media-change positive">+5.3%</p>
+                      </div>
+                    </div>
+                    <div class="social-media-item">
+                      <div class="social-media-icon">
+                        <i class="ri-linkedin-fill"></i>
+                      </div>
+                      <div class="social-media-content">
+                        <p class="social-media-value">6,290</p>
+                        <p class="social-media-title">Followers</p>
+                        <p class="social-media-change negative">-0.5%</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </template>
+
+  <!-- Mobile Menu Toggle -->
+  <button id="mobile-menu-toggle" class="mobile-menu-toggle">
+    <i class="ri-menu-line"></i>
+  </button>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="passwords.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
