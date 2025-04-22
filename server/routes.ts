@@ -1,5 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
+import path from "path";
 import { storage } from "./storage";
 import { setupAuth } from "./auth";
 import {
@@ -12,6 +13,11 @@ import {
 import { ZodError } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Serve standalone.html for direct access
+  app.get("/standalone.html", (req, res) => {
+    res.sendFile(path.resolve("./standalone.html"));
+  });
+  
   // Set up authentication routes
   setupAuth(app);
 
