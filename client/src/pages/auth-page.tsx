@@ -1,17 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLocation } from "wouter";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { gsap } from "gsap";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useAuth } from "@/hooks/use-auth";
-import { insertUserSchema } from "@shared/schema";
 
 // Login schema
 const loginSchema = z.object({
@@ -19,21 +16,12 @@ const loginSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-// Registration schema
-const registerSchema = insertUserSchema.extend({
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string(),
-}).refine(data => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
-
 type LoginFormData = z.infer<typeof loginSchema>;
-type RegisterFormData = z.infer<typeof registerSchema>;
 
 export default function AuthPage() {
   const [, navigate] = useLocation();
-  const { user, loginMutation, registerMutation } = useAuth();
+  const { user, loginMutation } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
   
   // If already logged in, redirect to dashboard
   useEffect(() => {
@@ -51,27 +39,8 @@ export default function AuthPage() {
     },
   });
 
-  // Register form
-  const registerForm = useForm<RegisterFormData>({
-    resolver: zodResolver(registerSchema),
-    defaultValues: {
-      username: "",
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      role: "developer",
-    },
-  });
-
   const onLoginSubmit = (data: LoginFormData) => {
     loginMutation.mutate(data);
-  };
-
-  const onRegisterSubmit = (data: RegisterFormData) => {
-    // Remove confirmPassword as it's not in the schema
-    const { confirmPassword, ...userData } = data;
-    registerMutation.mutate(userData);
   };
 
   // GSAP animations
@@ -102,227 +71,173 @@ export default function AuthPage() {
       delay: 0.5,
       ease: "power2.out"
     });
+
+    // Animate logo
+    gsap.from(".logo", {
+      scale: 0.8,
+      opacity: 0,
+      duration: 0.6,
+      ease: "back.out(1.5)"
+    });
   }, []);
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 flex items-center justify-center p-4">
+    <div className="min-h-screen w-full bg-gradient-to-br from-gray-100 to-gray-50 flex items-center justify-center p-4">
       <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-        <Tabs defaultValue="login" className="w-full auth-card">
-          <Card className="w-full shadow-lg border-none">
-            <CardHeader className="space-y-1">
-              <div className="flex items-center mb-2">
-                <svg className="w-8 h-8 text-primary" viewBox="0 0 24 24" fill="currentColor">
+        <div className="w-full auth-card">
+          <Card className="w-full shadow-xl border-none bg-white rounded-xl overflow-hidden">
+            <div className="bg-primary h-2 w-full"></div>
+            <CardHeader className="pt-8 pb-0">
+              <div className="flex items-center justify-center mb-6 logo">
+                <svg className="w-12 h-12 text-primary" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
                 </svg>
-                <h1 className="text-xl font-bold ml-2 font-poppins text-primary">AgencyDash</h1>
+                <h1 className="text-3xl font-bold ml-3 font-poppins text-primary">ZYLOX</h1>
               </div>
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="login">Login</TabsTrigger>
-                <TabsTrigger value="register">Register</TabsTrigger>
-              </TabsList>
+              <h2 className="text-2xl font-semibold text-center mb-2">Sign In</h2>
+              <p className="text-gray-500 text-center mb-4">Access your ZYLOX dashboard</p>
             </CardHeader>
-            <CardContent className="pt-4">
-              <TabsContent value="login">
-                <Form {...loginForm}>
-                  <form onSubmit={loginForm.handleSubmit(onLoginSubmit)} className="space-y-4">
-                    <FormField
-                      control={loginForm.control}
-                      name="username"
-                      render={({ field }) => (
-                        <FormItem className="form-item">
-                          <FormLabel>Username</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Enter username" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={loginForm.control}
-                      name="password"
-                      render={({ field }) => (
-                        <FormItem className="form-item">
-                          <FormLabel>Password</FormLabel>
-                          <FormControl>
-                            <Input type="password" placeholder="Enter password" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+            <CardContent className="pt-4 px-8 pb-8">
+              <Form {...loginForm}>
+                <form onSubmit={loginForm.handleSubmit(onLoginSubmit)} className="space-y-5">
+                  <FormField
+                    control={loginForm.control}
+                    name="username"
+                    render={({ field }) => (
+                      <FormItem className="form-item">
+                        <FormLabel className="text-gray-700">Username</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                              </svg>
+                            </div>
+                            <Input 
+                              placeholder="Enter your username" 
+                              className="pl-10 py-6 bg-gray-50 border border-gray-200 focus:bg-white transition-colors" 
+                              {...field} 
+                            />
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={loginForm.control}
+                    name="password"
+                    render={({ field }) => (
+                      <FormItem className="form-item">
+                        <FormLabel className="text-gray-700">Password</FormLabel>
+                        <FormControl>
+                          <div className="relative">
+                            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                              </svg>
+                            </div>
+                            <Input 
+                              type={showPassword ? "text" : "password"} 
+                              placeholder="Enter your password" 
+                              className="pl-10 py-6 bg-gray-50 border border-gray-200 focus:bg-white transition-colors" 
+                              {...field} 
+                            />
+                            <button 
+                              type="button" 
+                              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                              onClick={() => setShowPassword(!showPassword)}
+                            >
+                              {showPassword ? (
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                  <path fillRule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clipRule="evenodd" />
+                                  <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z" />
+                                </svg>
+                              ) : (
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                  <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                                  <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                                </svg>
+                              )}
+                            </button>
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <div className="pt-2">
                     <Button 
                       type="submit" 
-                      className="w-full form-item mt-6" 
+                      className="w-full py-6 text-base font-medium shadow-lg form-item" 
                       disabled={loginMutation.isPending}
                     >
                       {loginMutation.isPending ? (
                         <>
                           <span className="mr-2">Logging in</span>
-                          <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                           </svg>
                         </>
                       ) : (
-                        "Login"
+                        "Sign In"
                       )}
                     </Button>
-                  </form>
-                </Form>
-              </TabsContent>
-              <TabsContent value="register">
-                <Form {...registerForm}>
-                  <form onSubmit={registerForm.handleSubmit(onRegisterSubmit)} className="space-y-4">
-                    <FormField
-                      control={registerForm.control}
-                      name="username"
-                      render={({ field }) => (
-                        <FormItem className="form-item">
-                          <FormLabel>Username</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Create a username" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={registerForm.control}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem className="form-item">
-                          <FormLabel>Full Name</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Enter your full name" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={registerForm.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem className="form-item">
-                          <FormLabel>Email</FormLabel>
-                          <FormControl>
-                            <Input type="email" placeholder="Enter your email" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={registerForm.control}
-                      name="role"
-                      render={({ field }) => (
-                        <FormItem className="form-item">
-                          <FormLabel>Role</FormLabel>
-                          <FormControl>
-                            <select
-                              className="flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                              {...field}
-                            >
-                              <option value="admin">Admin</option>
-                              <option value="developer">Developer</option>
-                            </select>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={registerForm.control}
-                      name="password"
-                      render={({ field }) => (
-                        <FormItem className="form-item">
-                          <FormLabel>Password</FormLabel>
-                          <FormControl>
-                            <Input type="password" placeholder="Create a password" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={registerForm.control}
-                      name="confirmPassword"
-                      render={({ field }) => (
-                        <FormItem className="form-item">
-                          <FormLabel>Confirm Password</FormLabel>
-                          <FormControl>
-                            <Input type="password" placeholder="Confirm your password" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <Button 
-                      type="submit" 
-                      className="w-full form-item mt-6"
-                      disabled={registerMutation.isPending}
-                    >
-                      {registerMutation.isPending ? (
-                        <>
-                          <span className="mr-2">Registering</span>
-                          <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                        </>
-                      ) : (
-                        "Register"
-                      )}
-                    </Button>
-                  </form>
-                </Form>
-              </TabsContent>
+                  </div>
+                  
+                  <div className="text-center text-sm text-gray-500 mt-6">
+                    <p>Use the credentials provided by your administrator</p>
+                    <p>Default: username: moeed / password: secret</p>
+                  </div>
+                </form>
+              </Form>
             </CardContent>
           </Card>
-        </Tabs>
+        </div>
 
         <div className="hidden lg:block hero-content">
-          <div className="space-y-4">
+          <div className="space-y-6">
             <h1 className="text-4xl font-bold text-gray-900 font-poppins">
-              Welcome to AgencyDash
+              Welcome to ZYLOX Agency
             </h1>
             <p className="text-lg text-gray-600">
-              A powerful dashboard for agencies to manage projects, 
+              A powerful dashboard for digital agencies to manage projects, 
               track performance, and collaborate with team members.
             </p>
-            <div className="space-y-4 mt-8">
-              <div className="flex items-start space-x-3">
-                <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center mt-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-primary" viewBox="0 0 20 20" fill="currentColor">
+            <div className="space-y-5 mt-10">
+              <div className="flex items-start space-x-4">
+                <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mt-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold">Project Management</h3>
-                  <p className="text-gray-600">Easily create, assign, and track projects</p>
+                  <h3 className="text-xl font-semibold">Project Management</h3>
+                  <p className="text-gray-600 mt-1">Easily create, assign, and track projects with your team</p>
                 </div>
               </div>
-              <div className="flex items-start space-x-3">
-                <div className="w-8 h-8 bg-secondary/10 rounded-full flex items-center justify-center mt-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-secondary" viewBox="0 0 20 20" fill="currentColor">
+              <div className="flex items-start space-x-4">
+                <div className="w-10 h-10 bg-secondary/10 rounded-full flex items-center justify-center mt-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-secondary" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold">Team Collaboration</h3>
-                  <p className="text-gray-600">Work efficiently with your team members</p>
+                  <h3 className="text-xl font-semibold">Team Collaboration</h3>
+                  <p className="text-gray-600 mt-1">Work efficiently with your team members and clients</p>
                 </div>
               </div>
-              <div className="flex items-start space-x-3">
-                <div className="w-8 h-8 bg-accent/10 rounded-full flex items-center justify-center mt-1">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-accent" viewBox="0 0 20 20" fill="currentColor">
+              <div className="flex items-start space-x-4">
+                <div className="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center mt-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-accent" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold">Social Media Integration</h3>
-                  <p className="text-gray-600">Track social media performance in one place</p>
+                  <h3 className="text-xl font-semibold">Social Media Integration</h3>
+                  <p className="text-gray-600 mt-1">Track social media performance and analytics in one place</p>
                 </div>
               </div>
             </div>
