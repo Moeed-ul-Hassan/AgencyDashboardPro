@@ -1,51 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-      --background: 0 0% 100%;
---foreground: 20 14.3% 4.1%;
---muted: 60 4.8% 95.9%;
---muted-foreground: 25 5.3% 44.7%;
---popover: 0 0% 100%;
---popover-foreground: 20 14.3% 4.1%;
---card: 0 0% 100%;
---card-foreground: 20 14.3% 4.1%;
---border: 20 5.9% 90%;
---input: 20 5.9% 90%;
---primary: 207 90% 54%;
---primary-foreground: 211 100% 99%;
---secondary: 60 4.8% 95.9%;
---secondary-foreground: 24 9.8% 10%;
---accent: 60 4.8% 95.9%;
---accent-foreground: 24 9.8% 10%;
---destructive: 0 84.2% 60.2%;
---destructive-foreground: 60 9.1% 97.8%;
---ring: 20 14.3% 4.1%;
---radius: 0.5rem;
-  }
-  .dark {
-      --background: 240 10% 3.9%;
---foreground: 0 0% 98%;
---muted: 240 3.7% 15.9%;
---muted-foreground: 240 5% 64.9%;
---popover: 240 10% 3.9%;
---popover-foreground: 0 0% 98%;
---card: 240 10% 3.9%;
---card-foreground: 0 0% 98%;
---border: 240 3.7% 15.9%;
---input: 240 3.7% 15.9%;
---primary: 207 90% 54%;
---primary-foreground: 211 100% 99%;
---secondary: 240 3.7% 15.9%;
---secondary-foreground: 0 0% 98%;
---accent: 240 3.7% 15.9%;
---accent-foreground: 0 0% 98%;
---destructive: 0 62.8% 30.6%;
---destructive-foreground: 0 0% 98%;
---ring: 240 4.9% 83.9%;
---radius: 0.5rem;
-  }
+  --background: 220 33% 98%;
+  --foreground: 224 71.4% 4.1%;
+  --muted: 220 14.3% 95.9%;
+  --muted-foreground: 220 8.9% 46.1%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 224 71.4% 4.1%;
+  --card: 0 0% 100%;
+  --card-foreground: 224 71.4% 4.1%;
+  --border: 220 13% 91%;
+  --input: 220 13% 91%;
+  --primary: 224 76% 48%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 214 32% 91%;
+  --secondary-foreground: 222 47% 11%;
+  --accent: 262 83% 58%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --ring: 224 76% 48%;
+  --radius: 0.75rem;
+  --light: 220 14.3% 95.9%;
+  --dark: 224 71.4% 4.1%;
+  --success: 142 71% 45%;
+  --warning: 38 92% 50%;
+  --info: 200 98% 39%;
+}
+
+.dark {
+  --background: 224 71% 4%;
+  --foreground: 210 40% 98%;
+  --muted: 223 47% 11%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --popover: 224 71% 4%;
+  --popover-foreground: 210 40% 98%;
+  --card: 224 71% 4%;
+  --card-foreground: 210 40% 98%;
+  --border: 216 34% 17%;
+  --input: 216 34% 17%;
+  --primary: 224 76% 48%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 222 47% 11%;
+  --secondary-foreground: 210 40% 98%;
+  --accent: 262 83% 58%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 63% 31%;
+  --destructive-foreground: 210 40% 98%;
+  --ring: 224 76% 48%;
+  --radius: 0.75rem;
+  --light: 222 47% 11%;
+  --dark: 210 40% 98%;
+}
 
 @layer base {
   * {
@@ -53,7 +64,69 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans text-foreground bg-background antialiased;
+  }
+
+  .font-poppins {
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .font-inter {
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer components {
+  .dashboard-card {
+    @apply bg-white rounded-xl shadow-sm border-0 p-5 transition-all duration-300 hover:shadow-md;
+  }
+  
+  .sidebar-link {
+    @apply flex items-center p-3 font-medium rounded-xl transition-colors;
+  }
+  
+  .sidebar-link.active {
+    @apply bg-primary/10 text-primary;
+  }
+
+  .sidebar-link:hover:not(.active) {
+    @apply bg-secondary/50 text-foreground;
+  }
+  
+  .btn-icon {
+    @apply flex items-center justify-center rounded-full h-9 w-9 transition-colors;
+  }
+  
+  .btn-icon-primary {
+    @apply bg-primary/10 text-primary hover:bg-primary/20;
+  }
+  
+  .btn-icon-secondary {
+    @apply bg-secondary/80 text-secondary-foreground hover:bg-secondary;
+  }
+  
+  .gradient-heading {
+    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+  }
+
+  .highlight-item {
+    @apply relative overflow-hidden;
+  }
+  
+  .highlight-item::after {
+    @apply content-[""] absolute bottom-0 left-0 w-0 h-[2px] bg-primary transition-all duration-300;
+  }
+  
+  .highlight-item:hover::after {
+    @apply w-full;
+  }
+  
+  .glassmorphism {
+    @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-lg;
+  }
+  
+  .btn-gradient {
+    @apply bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white transition-all duration-300;
   }
 }
 
