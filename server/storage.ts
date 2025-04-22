@@ -235,10 +235,10 @@ export class MemStorage implements IStorage {
   
   // Initialize sample data
   private async initializeSampleData() {
-    // Add default team performance
-    await this.addTeamPerformance({ team: 'Design Team', performance: 80 });
-    await this.addTeamPerformance({ team: 'Dev Team', performance: 70 });
-    await this.addTeamPerformance({ team: 'Marketing', performance: 90 });
+    // Add Zylox team performance
+    await this.addTeamPerformance({ team: 'Web Dev', performance: 85 });
+    await this.addTeamPerformance({ team: 'Game Dev', performance: 75 });
+    await this.addTeamPerformance({ team: 'Shopify', performance: 92 });
     
     // Add default social media stats
     await this.addSocialMediaStat({ platform: 'Twitter', followers: 5200, engagement: 65, growth: '+12.6%' });

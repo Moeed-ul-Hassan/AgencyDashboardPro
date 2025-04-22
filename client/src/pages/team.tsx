@@ -46,9 +46,10 @@ export default function Team() {
             <div className="flex space-x-2">
               <select className="border rounded-lg p-2 pr-8 text-sm appearance-none bg-white">
                 <option>All Roles</option>
-                <option>Developers</option>
-                <option>Designers</option>
-                <option>Project Managers</option>
+                <option>Web Dev</option>
+                <option>Game Dev</option>
+                <option>WordPress Dev</option>
+                <option>Shopify Expert</option>
               </select>
               <select className="border rounded-lg p-2 pr-8 text-sm appearance-none bg-white">
                 <option>Sort by Name</option>

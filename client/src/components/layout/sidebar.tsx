@@ -52,7 +52,7 @@ export default function Sidebar() {
             <svg className="w-8 h-8 text-primary" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
             </svg>
-            <h1 className="text-xl font-bold ml-2 font-poppins text-primary">AgencyDash</h1>
+            <h1 className="text-xl font-bold ml-2 font-poppins text-primary">Zylox</h1>
           </div>
           
           <nav className="flex-1">
