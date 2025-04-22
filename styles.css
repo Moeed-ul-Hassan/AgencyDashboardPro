@@ -208,27 +208,9 @@ img {
   margin-bottom: var(--spacing-4);
 }
 
-.logo-icon {
-  width: 2.5rem;
-  height: 2.5rem;
-  background-color: var(--color-text);
-  color: var(--color-bg);
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: var(--spacing-2);
-}
-
-.logo-icon svg {
-  width: 1.5rem;
-  height: 1.5rem;
-}
-
-.logo-text {
-  font-size: 1.75rem;
-  font-weight: 700;
-  font-family: var(--font-display);
+.logo-image {
+  height: 40px;
+  max-width: 100%;
 }
 
 .auth-header h2 {
